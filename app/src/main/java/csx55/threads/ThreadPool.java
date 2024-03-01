@@ -112,15 +112,21 @@ public class ThreadPool {
 
     public void multiplyMatrices() {
         //generate tasks for first matrix
+        long currentTime = System.currentTimeMillis();
         generateTasks(0);
         execute(generateTasks);
-        System.out.println("Finished calculation Matrix X with sum:" + sumOfIntermediateX);
+        System.out.println("Finished calculating matrix X with time " + ((System.currentTimeMillis() - currentTime) / 1000f));
+        System.out.println("Finished calculating Matrix X with sum:" + sumOfIntermediateX);
+        currentTime = System.currentTimeMillis();
         generateTasks(1);
         execute(generateTasks2);
-        System.out.println("Finished calculation Matrix Y with sum:" + sumOfIntermediateY);
+        System.out.println("Finished calculating matrix Y with time " + ((System.currentTimeMillis() - currentTime) / 1000f));
+        System.out.println("Finished calculating Matrix Y with sum:" + sumOfIntermediateY);
+        currentTime = System.currentTimeMillis();
         generateTasks(2);
         execute(generateTasks3);
-        System.out.println("Finished calculation Matrix Z with sum:" + sumOfIntermediateZ);
+        System.out.println("Finished calculating matrix Z with time " + ((System.currentTimeMillis() - currentTime) / 1000f));
+        System.out.println("Finished calculating Matrix Z with sum:" + sumOfIntermediateZ);
     }
 
 }
