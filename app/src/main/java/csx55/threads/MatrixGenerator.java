@@ -9,7 +9,7 @@ public class MatrixGenerator {
     int[] matrixD;
     int matrixDimension;
     int seed;
-    int aSize,bSize,cSize,dSize;
+    public long aSize,bSize,cSize,dSize;
 
     public MatrixGenerator(int matrixDimension, int seed) {
         int matrixCells = matrixDimension * matrixDimension;
@@ -36,16 +36,22 @@ public class MatrixGenerator {
     public void generateMatrices() {
         Random rand = new Random(seed);
         for(int i = 0; i < matrixA.length; ++i) {
-            int number = rand.nextInt(1000 - -1000) + -1000;
+            int number = 1000 - rand.nextInt(1000 - -1000);
             matrixA[i] = number;
             aSize += number;
-            number = rand.nextInt(1000 - -1000) + -1000;
+        }
+        for (int i = 0; i < matrixA.length; ++i) {
+            int number = 1000 - rand.nextInt(1000 - -1000);
             matrixB[i] = number;
             bSize += number;
-            number = rand.nextInt(1000 - -1000) + -1000;
+        }
+        for (int i = 0; i < matrixA.length; ++i) {
+            int number = 1000 - rand.nextInt(1000 - -1000);
             matrixC[i] = number;
-            cSize+=number;
-            number = rand.nextInt(1000 - -1000) + -1000;
+            cSize += number;
+        }
+        for (int i = 0; i < matrixA.length; ++i) {
+            int number = 1000 - rand.nextInt(1000 - -1000);
             matrixD[i] = number;
             dSize += number;
         }

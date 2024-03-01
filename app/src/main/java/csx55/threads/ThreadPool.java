@@ -19,7 +19,8 @@ public class ThreadPool {
     CountDownLatch generateTasks2;
     CountDownLatch generateTasks3;
     int matrixDimension;
-
+    int numberOfThreads;
+    MatrixGenerator gen;
     static long sumOfIntermediateX, sumOfIntermediateY, sumOfIntermediateZ;
 
     public ThreadPool(int numberOfThreads, MatrixGenerator gen, int matrixDimension) {
@@ -28,6 +29,7 @@ public class ThreadPool {
         generateTasks = new CountDownLatch(matrixDimension);
         generateTasks2 = new CountDownLatch(matrixDimension);
         generateTasks3 = new CountDownLatch(matrixDimension);
+        this.gen = gen;
         // CountDownLatch finishedResult = new CountDownLatch(matrixDimension);
         // CountDownLatch finishedResult2 = new CountDownLatch(matrixDimension);
 
@@ -53,6 +55,7 @@ public class ThreadPool {
         intermediateMatrixX = new int[matrixDimension * matrixDimension];
         intermediateMatrixY = new int[matrixDimension * matrixDimension];
         intermediateMatrixZ = new int[matrixDimension * matrixDimension];
+        this.numberOfThreads = numberOfThreads;
     }
 
     public void execute(CountDownLatch latch) {
@@ -67,7 +70,7 @@ public class ThreadPool {
                 //System.out.println(queue.size());
          }
             latch.await();
-            System.out.println("I am no longer awaiting");
+            //System.out.println("I am no longer awaiting");
         }
         catch(InterruptedException e) {
             e.printStackTrace();
@@ -111,22 +114,33 @@ public class ThreadPool {
     }
 
     public void multiplyMatrices() {
+        double totalTime = 0;
+        double adjustedTime = 0.0;
         //generate tasks for first matrix
+        System.out.println("Matrix Dimensions: " + matrixDimension + " with number of threads: " + numberOfThreads);
+        System.out.println(String.format("A sum: %s B sum: %s C sum: %s D sum: %s", gen.aSize, gen.bSize, gen.cSize, gen.dSize));
         long currentTime = System.currentTimeMillis();
         generateTasks(0);
         execute(generateTasks);
-        System.out.println("Finished calculating matrix X with time " + ((System.currentTimeMillis() - currentTime) / 1000f));
+        adjustedTime = ((System.currentTimeMillis() - currentTime) / 1000f);
+        totalTime += adjustedTime;
+        System.out.println("Finished calculating matrix X with time " + adjustedTime);
         System.out.println("Finished calculating Matrix X with sum:" + sumOfIntermediateX);
         currentTime = System.currentTimeMillis();
         generateTasks(1);
         execute(generateTasks2);
-        System.out.println("Finished calculating matrix Y with time " + ((System.currentTimeMillis() - currentTime) / 1000f));
+        adjustedTime = ((System.currentTimeMillis() - currentTime) / 1000f);
+        totalTime += adjustedTime;
+        System.out.println("Finished calculating matrix Y with time " + adjustedTime);
         System.out.println("Finished calculating Matrix Y with sum:" + sumOfIntermediateY);
         currentTime = System.currentTimeMillis();
         generateTasks(2);
         execute(generateTasks3);
-        System.out.println("Finished calculating matrix Z with time " + ((System.currentTimeMillis() - currentTime) / 1000f));
+        adjustedTime = ((System.currentTimeMillis() - currentTime) / 1000f);
+        totalTime += adjustedTime;
+        System.out.println("Finished calculating matrix Z with time " + adjustedTime);
         System.out.println("Finished calculating Matrix Z with sum:" + sumOfIntermediateZ);
+        System.out.println("Finished computing xyz with cumulative time: " + totalTime + " Threads: " + numberOfThreads);
+        System.exit(1);
     }
-
 }
